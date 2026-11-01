@@ -7,7 +7,7 @@
 <title>LOXSMAX — короткие видео</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#080908;--panel:#111410;--line:#252922;--muted:#92988b;--lime:#c6ff3d;--white:#f7f9f3}
+:root{--bg:#080808;--panel:#151515;--line:#303030;--muted:#a1a1a1;--lime:#ffffff;--white:#ffffff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}
 header{height:58px;position:sticky;top:0;z-index:8;background:#080908ed;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 17px;backdrop-filter:blur(14px)}
 .logo{font-weight:1000;font-size:23px;letter-spacing:1.7px}.logo span{color:var(--lime)}.header-right{display:flex;gap:9px;align-items:center}
@@ -30,12 +30,40 @@ nav button{border:0;background:none;color:#aaa;font-size:10px;display:flex;align
 .profile-top{text-align:center;padding:22px}.avatar{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:#29321c;color:var(--lime);font-size:30px;margin:0 auto 12px}
 .toast{position:fixed;z-index:30;bottom:85px;left:50%;transform:translateX(-50%);background:#e8ffbd;color:#12150c;padding:11px 16px;border-radius:99px;font-size:13px;font-weight:700;display:none;max-width:90%;text-align:center}
 @media(min-width:700px){body{background:#0c0e0a}.home-wrap{max-width:460px;margin:0 auto;height:calc(100dvh - 62px);border-left:1px solid #252922;border-right:1px solid #252922}header{padding:0 calc((100% - 650px)/2 + 17px)}}
+
+/* Mobile-first full-screen short-video layout */
+html,body{width:100%;height:100%;overflow-x:hidden;background:#000}
+body{font-family:Arial,Helvetica,sans-serif}
+body:has(#homeScreen.active) main{width:100%;max-width:none;margin:0;padding:0}
+body:has(#homeScreen.active) nav{height:calc(58px + env(safe-area-inset-bottom));padding:0 4px env(safe-area-inset-bottom);background:#080808;border-top:1px solid #242424}
+.home-wrap{width:100%;height:calc(100dvh - 58px - env(safe-area-inset-bottom));height:calc(100svh - 58px - env(safe-area-inset-bottom));background:#000}
+.feed{width:100%;height:100%;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain}
+.video-card{width:100%;height:100%;min-height:100%;scroll-snap-stop:always;background:#080808}
+.video-card video{display:block;width:100%;height:100%;object-fit:cover;object-position:center;background:#080808}
+.feed-top{padding-top:calc(13px + env(safe-area-inset-top));gap:22px}
+.feed-top span{font-size:14px}.feed-top span.selected{font-size:16px}
+.video-info{left:14px;right:78px;bottom:20px}
+.video-info strong{font-size:15px}.video-info p{font-size:14px;max-width:100%;overflow-wrap:anywhere}
+.video-actions{right:10px;bottom:86px;gap:16px}
+.icon-action{width:46px;height:46px;border:0;background:#202020a8;color:#fff;font-size:24px}
+.icon-action.liked{color:#ff3158}
+.action-label{font-size:10px;color:#fff}
+nav{height:calc(58px + env(safe-area-inset-bottom));padding:0 4px env(safe-area-inset-bottom);background:#080808;border-top:1px solid #242424;justify-content:space-around;gap:0}
+nav button{height:54px;min-width:0;flex:1;color:#aaa;font-size:10px;gap:2px}
+nav button b{font-size:23px;line-height:25px;color:#fff}
+nav button.active{color:#fff}nav button.active b{color:#fff}
+nav .black-pill{flex:1;min-width:0;align-items:center;justify-content:center}
+nav .black-pill b{width:38px;height:22px;transform:rotate(-35deg);border:1px solid #777;background:linear-gradient(110deg,#080808 0%,#252525 48%,#050505 100%);box-shadow:inset 1px 1px 2px #ffffff35,0 1px 5px #000;border-radius:99px}
+nav .black-pill b:after{background:#777}
+body:not(:has(#homeScreen.active)) main{padding-bottom:calc(75px + env(safe-area-inset-bottom))}
+body:not(:has(#homeScreen.active)) nav{height:calc(58px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)}
+@media(min-width:700px){body:has(#homeScreen.active) main{max-width:none}.home-wrap{max-width:460px;height:calc(100dvh - 58px);margin:0 auto}.video-card{height:100%}}
 </style>
 </head>
 <body>
 <header><div class="logo">LOX<span>SMAX</span></div><div class="header-right"><span id="accountState" class="small">Гость</span><button class="pill" id="authOpen">Войти</button></div></header>
 <main>
-<section id="homeScreen" class="screen active"><div class="home-wrap"><div class="feed-top"><span>Подписки</span><span class="selected">Для вас</span></div><div id="feed" class="feed"><div class="empty"><h2>Твоя лента начинается здесь</h2><p>Войди в аккаунт и опубликуй первое видео.</p></div></div></div></section>
+<section id="homeScreen" class="screen active"><div class="home-wrap"><div class="feed-top"><span>Подписки</span><span class="selected">Рекомендации</span></div><div id="feed" class="feed"><div class="empty"><h2>Твоя лента начинается здесь</h2><p>Войди в аккаунт и опубликуй первое видео.</p></div></div></div></section>
 <section id="searchScreen" class="screen"><div class="panel"><h1>Кенты</h1><p class="sub">Находи друзей и подписывайся на авторов LOXSMAX.</p><input id="searchInput" class="field" placeholder="Имя пользователя"><div id="searchResults" class="card"><p class="small">Введи имя пользователя для поиска.</p></div></div></section>
 <section id="createScreen" class="screen"><div class="panel"><h1>Создать</h1><p class="sub">Публикуй короткие видео и добавляй собственные звуки.</p>
 <div class="card"><h3>Новое видео</h3><p class="sub">Запиши ролик прямо сейчас или выбери готовый из галереи.</p><div id="selectedVideoName" class="tag hidden"></div><video id="videoPreview" class="hidden" controls playsinline style="width:100%;max-height:320px;border-radius:13px;background:#000;margin:10px 0"></video><label>Описание</label><textarea id="videoCaption" class="field" rows="3" maxlength="500" placeholder="О чём твоё видео?"></textarea><label>Добавить звук</label><select id="soundSelect" class="field"><option value="">Без дополнительного звука</option></select><button id="publishVideo" class="primary" style="width:100%">Опубликовать видео</button><p class="small">Максимальный размер файла — 100 МБ. Загружай только видео, на публикацию которого у тебя есть права.</p></div>
@@ -44,7 +72,7 @@ nav button{border:0;background:none;color:#aaa;font-size:10px;display:flex;align
 <section id="notificationsScreen" class="screen"><div class="panel"><h1>Уведомления</h1><div class="card"><p class="sub">Пока уведомлений нет. Здесь будут отображаться новые подписчики и реакции.</p></div></div></section>
 <section id="profileScreen" class="screen"><div class="panel"><div class="profile-top"><div class="avatar" id="avatar">L</div><h1 id="profileName">@guest</h1><p class="sub" id="profileBio">Твой профиль LOXSMAX</p><div class="row" style="margin-top:16px"><div><b id="videoCount">0</b><div class="small">Видео</div></div><div><b id="followerCount">0</b><div class="small">Подписчики</div></div><div><b id="followingCount">0</b><div class="small">Подписки</div></div></div></div><div class="card"><button id="editProfile" class="pill" style="width:100%">Изменить профиль</button><button id="signOut" class="pill hidden" style="width:100%;margin-top:9px">Выйти</button></div><h3>Мои видео</h3><div id="myVideos" class="card"><p class="small">Войди, чтобы увидеть свои публикации.</p></div></div></section>
 </main>
-<nav><button class="active" data-screen="homeScreen"><b>⌂</b>Рекомендации</button><button data-screen="searchScreen"><b>♧</b>Кенты</button><button class="black-pill" id="openCreate" aria-label="Создать видео"><b></b></button><button data-screen="profileScreen"><b>♙</b>Профиль</button></nav>
+<nav><button class="active" data-screen="homeScreen"><b>⌂</b>Рекомендации</button><button data-screen="searchScreen"><b>♧</b>Кенты</button><button class="black-pill" id="openCreate" aria-label="Создать видео"><b></b></button><button data-screen="notificationsScreen"><b>✉</b>Входящие</button><button data-screen="profileScreen"><b>♙</b>Профиль</button></nav>
 <input id="cameraVideoFile" class="hidden" type="file" accept="video/*" capture="environment"><input id="galleryVideoFile" class="hidden" type="file" accept="video/*"><div id="createChoiceModal" class="modal"><div class="modal-box"><div class="modal-head"><h2>Создать видео</h2><button class="close" data-close="createChoiceModal">×</button></div><p class="sub">Сними видео камерой или загрузи ролик из галереи.</p><button id="recordVideo" class="primary" style="width:100%;margin:8px 0">📹 Снять видео</button><button id="chooseVideo" class="pill" style="width:100%;margin:8px 0">▧ Выбрать из галереи</button></div></div><div id="authModal" class="modal"><div class="modal-box"><div class="modal-head"><h2 id="authTitle">Войти в LOXSMAX</h2><button class="close" data-close="authModal">×</button></div><p class="sub">Используй почту для входа или создания аккаунта.</p><input id="authEmail" class="field" type="email" placeholder="Электронная почта"><input id="authPassword" class="field" type="password" placeholder="Пароль (минимум 6 символов)"><input id="authUsername" class="field hidden" maxlength="24" placeholder="Имя пользователя"><button id="authSubmit" class="primary" style="width:100%">Войти</button><button id="authSwitch" class="pill" style="width:100%;margin-top:9px">Создать аккаунт</button><p class="small" style="margin-top:12px">Не используй чужие фото, музыку или видео без разрешения.</p></div></div>
 <div id="commentsModal" class="modal"><div class="modal-box"><div class="modal-head"><h2>Комментарии</h2><button class="close" data-close="commentsModal">×</button></div><div id="commentsList"></div><input id="commentInput" class="field" placeholder="Написать комментарий…"><button id="sendComment" class="primary" style="width:100%">Отправить</button></div></div>
 <div id="editModal" class="modal"><div class="modal-box"><div class="modal-head"><h2>Профиль</h2><button class="close" data-close="editModal">×</button></div><label>Имя пользователя</label><input id="editUsername" class="field" maxlength="24"><label>О себе</label><textarea id="editBio" class="field" rows="3" maxlength="160"></textarea><button id="saveProfile" class="primary" style="width:100%">Сохранить</button></div></div>
