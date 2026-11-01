@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOXSMAX</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#080808;
+  color:white;
+  font-family:Arial,sans-serif;
+  overflow:hidden;
+}
+header{
+  height:55px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-bottom:1px solid #222;
+  font-weight:900;
+  font-size:23px;
+  letter-spacing:2px;
+}
+.logo span{color:#c6ff3d}
+.feed{
+  height:calc(100dvh - 115px);
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+}
+.video{
+  height:100%;
+  min-height:100%;
+  position:relative;
+  scroll-snap-align:start;
+  background:#171717;
+  overflow:hidden;
+}
+.video img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+}
+.video:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    transparent 45%,
+    rgba(0,0,0,.85)
+  );
+}
+.info{
+  position:absolute;
+  bottom:25px;
+  left:15px;
+  z-index:2;
+  width:70%;
+}
+.username{font-weight:bold;margin-bottom:8px}
+.caption{font-size:14px;line-height:1.5}
+.tags{color:#c6ff3d;margin-top:8px}
+.actions{
+  position:absolute;
+  right:12px;
+  bottom:100px;
+  z-index:3;
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+  align-items:center;
+}
+.action{
+  background:none;
+  border:0;
+  color:white;
+  font-size:27px;
+  cursor:pointer;
+}
+.action small{
+  display:block;
+  font-size:11px;
+  margin-top:5px;
+}
+.action.liked{color:#c6ff3d}
+nav{
+  height:60px;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  background:#080808;
+  border-top:1px solid #222;
+}
+nav button{
+  background:none;
+  border:0;
+  color:#888;
+  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  align-items:center;
+}
+nav button b{font-size:22px}
+nav button.active{color:#c6ff3d}
+.upload{
+  width:42px;
+  height:30px;
+  background:#c6ff3d;
+  color:#080808;
+  border-radius:9px;
+  font-size:24px;
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">LOX<span>SMAX</span></div>
+</header>
+
+<main class="feed" id="feed">
+
+  <section class="video">
+    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=85">
+    <div class="info">
+      <div class="username">@alex.glow</div>
+      <div class="caption">
+        30 дней работы над собой.
+        Результат говорит сам за себя.
+      </div>
+      <div class="tags">#glowup #looksmaxxing</div>
+    </div>
+    <div class="actions">
+      <button class="action" onclick="like(this)">♡<small>2.4k</small></button>
+      <button class="action" onclick="comment()">▢<small>128</small></button>
+      <button class="action" onclick="share()">↗<small>Поделиться</small></button>
+      <button class="action" onclick="follow(this)">＋<small>Подписка</small></button>
+    </div>
+  </section>
+
+  <section class="video">
+    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=85">
+    <div class="info">
+      <div class="username">@style.max</div>
+      <div class="caption">
+        Как подобрать стрижку под форму лица?
+      </div>
+      <div class="tags">#hair #style #glowup</div>
+    </div>
+    <div class="actions">
+      <button class="action" onclick="like(this)">♡<small>986</small></button>
+      <button class="action" onclick="comment()">▢<small>54</small></button>
+      <button class="action" onclick="share()">↗<small>Поделиться</small></button>
+      <button class="action" onclick="follow(this)">＋<small>Подписка</small></button>
+    </div>
+  </section>
+
+  <section class="video">
+    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85">
+    <div class="info">
+      <div class="username">@glow.diary</div>
+      <div class="caption">
+        Мой glow up. Главное — регулярность.
+      </div>
+      <div class="tags">#glowup #skincare</div>
+    </div>
+    <div class="actions">
+      <button class="action" onclick="like(this)">♡<small>1.8k</small></button>
+      <button class="action" onclick="comment()">▢<small>96</small></button>
+      <button class="action" onclick="share()">↗<small>Поделиться</small></button>
+      <button class="action" onclick="follow(this)">＋<small>Подписка</small></button>
+    </div>
+  </section>
+
+</main>
+
+<nav>
+  <button class="active" onclick="tab(this)">
+    <b>⌂</b>Главная
+  </button>
+  <button onclick="tab(this)">
+    <b>⌕</b>Поиск
+  </button>
+  <button onclick="uploadVideo()">
+    <b class="upload">+</b>Создать
+  </button>
+  <button onclick="tab(this)">
+    <b>♡</b>Уведомления
+  </button>
+  <button onclick="tab(this)">
+    <b>◉</b>Профиль
+  </button>
+</nav>
+
+<script>
+function like(btn){
+  btn.classList.toggle("liked");
+  btn.innerHTML=btn.classList.contains("liked")
+    ?"♥<small>Liked</small>"
+    :"♡<small>Like</small>";
+}
+function comment(){
+  alert("Комментарии появятся в следующей версии!");
+}
+function share(){
+  if(navigator.share){
+    navigator.share({title:"LOXSMAX",url:location.href});
+  }else{
+    alert("Скопируй ссылку на Loxsmax!");
+  }
+}
+function follow(btn){
+  btn.innerHTML=btn.innerHTML.includes("＋")
+    ?"✓<small>Вы подписаны</small>"
+    :"＋<small>Подписка</small>";
+}
+function tab(btn){
+  document.querySelectorAll("nav button")
+    .forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+}
+function uploadVideo(){
+  alert("Загрузка видео появится в следующей версии!");
+}
+</script>
+
+</body>
+</html>
