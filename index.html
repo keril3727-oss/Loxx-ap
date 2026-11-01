@@ -59,6 +59,48 @@ body:not(:has(#homeScreen.active)) main{padding-bottom:calc(75px + env(safe-area
 body:not(:has(#homeScreen.active)) nav{height:calc(58px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)}
 @media(min-width:700px){body:has(#homeScreen.active) main{max-width:none}.home-wrap{max-width:460px;height:calc(100dvh - 58px);margin:0 auto}.video-card{height:100%}}
 </style>
+
+/* LOXSMAX TikTok-inspired redesign v2 — UI only */
+<style id="lox-redesign">
+:root{--bg:#000;--panel:#101010;--line:#262626;--muted:#a4a4a4;--lime:#fff;--white:#fff}
+html,body{background:#000;color:#fff}
+header{background:#080808;border-bottom:1px solid #202020}
+.logo{font-size:22px;letter-spacing:-.8px;font-weight:900}.logo span{color:#fff}
+.pill{background:#191919;border-color:#333;color:#fff}
+.primary{background:#fff;color:#000;border-radius:8px}
+nav{background:#080808!important;border-top:1px solid #242424!important}
+nav button{font-size:10px;color:#888;letter-spacing:.05px}
+nav button b{color:#fff;font-size:23px}
+nav button.active,nav button.active b{color:#fff}
+nav .black-pill b{width:44px;height:29px;border:0;border-radius:8px;transform:none;background:linear-gradient(90deg,#25f4ee 0 10%,#fff 10% 90%,#fe2c55 90%);box-shadow:none;position:relative}
+nav .black-pill b:after{content:"+";position:absolute;inset:0;display:grid;place-items:center;color:#111;background:transparent;font-size:28px;font-weight:400;line-height:1}
+.feed-top{padding-top:calc(14px + env(safe-area-inset-top));gap:24px}
+.feed-top span{font-size:14px;font-weight:600;color:#ffffffb0}
+.feed-top span.selected{font-size:16px;color:#fff}
+.feed-top span.selected:after{background:#fff;width:24px;height:2px}
+.video-card{background:#111}
+.video-shade{background:linear-gradient(180deg,#0007 0%,transparent 24%,transparent 58%,#000b 100%)}
+.video-info{bottom:22px}
+.video-info strong{font-size:15px;font-weight:700}
+.video-info p{font-size:14px;line-height:1.4}
+.video-actions{bottom:94px;gap:18px}
+.icon-action{background:#1119;border:1px solid #ffffff24}
+.icon-action.liked{color:#fe2c55;border-color:#fe2c55}
+.action-label{font-size:11px;font-weight:600}
+.panel h1{font-size:24px;letter-spacing:-.5px}
+.card{background:#111;border-color:#262626;border-radius:12px}
+.field{background:#191919;border:1px solid #303030;border-radius:8px;color:#fff}
+.field:focus{border-color:#777}
+.modal{align-items:center;padding:16px}
+.modal-box{width:min(100%,430px);border-radius:16px;background:#111;border:1px solid #282828;padding:22px 18px calc(22px + env(safe-area-inset-bottom))}
+.modal-head h2{font-size:20px;letter-spacing:-.4px}
+.close{background:#222;border:1px solid #333}
+.profile-top{padding:22px 12px}
+.avatar{background:#252525;color:#fff}
+.tag{color:#fff;border-color:#444}
+.toast{background:#fff;color:#111;border-radius:8px}
+@media(min-width:700px){.home-wrap{max-width:460px;border:1px solid #222}.video-card{max-width:460px}}
+</style>
 </head>
 <body>
 <header><div class="logo">LOX<span>SMAX</span></div><div class="header-right"><span id="accountState" class="small">Гость</span><button class="pill" id="authOpen">Войти</button></div></header>
